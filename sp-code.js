@@ -8,7 +8,7 @@ export function spCode() {
         let scale = input();
         let size = input();
 
-        let n = vectorContourNoise(s*scale+time*0.14, .05, 6)*.5+.5;
+        let n = vectorContourNoise(s*scale+time*0.06, .05, 4)*.5+.5;
         n = pow(n, vec3(2))
 
         let color1r = input();
@@ -54,8 +54,12 @@ export function spCode() {
         let col = vec3(0, 1, conto);
         reflectiveColor(rcr, rcg, rcb)
         // torus(0.5,0.25);
-        sphere(0.3);
-        expand(n.z* (scale /2.5) )
+
+        sphere(1);
+
+        let ripple = input();
+
+        expand(n.z* (scale / ripple) )
 
         reset();
 

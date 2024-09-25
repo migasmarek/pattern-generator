@@ -42,6 +42,7 @@ let state = {
   displaceY: 1,
   displaceZ: 0,
   occlusionValue: 0.1,
+  ripple: 2.5,
 //   stepSize: .5
 }
 
@@ -54,6 +55,7 @@ const obj = {
     displaceY: state.displaceY,
     displaceZ: state.displaceZ,
     occlusionValue: state.occlusionValue,
+    ripple: state.ripple,
     // stepSize: state.stepSize,
     color1: {
         r: state.color1r,
@@ -85,6 +87,7 @@ gui.add(obj, 'displaceX', 0, 10, 0.01);
 gui.add(obj, 'displaceY', 0, 10, 0.01);
 gui.add(obj, 'displaceZ', 0, 10, 0.01);
 gui.add(obj, 'occlusionValue', 0.0, 0.95, 0.01);
+gui.add(obj, 'ripple', 1.0, 10.0, 0.01);
 // gui.add(obj, 'stepSize', .01, .95, 0.01);
 gui.addColor(obj, 'color1');
 gui.addColor(obj, 'color2');
@@ -146,6 +149,7 @@ let mesh = createSculptureWithGeometry(geometry, spCode(), () => {
     displaceY: state.displaceY,
     displaceZ: state.displaceZ,
     occlusionValue: state.occlusionValue,
+    ripple: state.ripple,
     // stepSize: state.stepSize,
   }
 })
