@@ -12,7 +12,7 @@ camera.position.z = 2;
 let renderer = new WebGLRenderer({ antialias: true, transparent: true });
 renderer.setSize( window.innerWidth, window.innerHeight );
 renderer.setPixelRatio( window.devicePixelRatio );
-renderer.setClearColor( new Color(1, 1, 1), 1);
+renderer.setClearColor( new Color(0, 0, 0), 1);
 document.body.appendChild( renderer.domElement );
 
 let clock = new Clock();
