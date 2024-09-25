@@ -1,7 +1,7 @@
 export function spCode() {
     return `
-        setStepSize(.85);
-        setMaxIterations(3)
+        setStepSize(.99);
+        setMaxIterations(4)
         let s = getSpace();
 
         let pointerDown = input();
@@ -38,18 +38,23 @@ export function spCode() {
         let metalAmount = input();
 
         metal(metalAmount);
-        setMaxReflections(.2)
-        occlusion(-100)
+        setMaxReflections(.85)
+
+        let occlusionValue = input()
+        
+        occlusion(occlusionValue)
 
         let displaceX = input();
         let displaceY = input();
+        let displaceZ = input();
 
-        displace(displaceX, displaceY);
+        displace(displaceX, displaceY, displaceZ);
         let conto = getRayDirection().x * 10 * sin(time + scale * 1);
 
         let col = vec3(0, 1, conto);
         reflectiveColor(rcr, rcg, rcb)
-        torus(0.2,0.2);
+        // torus(0.5,0.25);
+        sphere(0.3);
         expand(n.z* (scale /2.5) )
 
         reset();

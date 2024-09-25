@@ -24,22 +24,24 @@ let state = {
   pointerDown: 0.0,
   currPointerDown: 0.0,
   time: 0.0,
-  scale: 0.5,
+  scale: 0.15,
   color1r: 0.2,
   color1g: 0.163,
   color1b: 0.51,
   color2r: 0.4,
   color2g: 0.863,
   color2b: 0.4,
-  color3r: 1.0,
+  color3r: 0.76,
   color3g: 0.863,
   color3b: 1.0,
-  rcr: 0.4,
-  rcg: 1,
-  rcb: 0.2,
-  metalAmount: 0.5,
+  rcr: 0.5,
+  rcg: 0.5,
+  rcb: 0.5,
+  metalAmount: 0.0,
   displaceX: 0.1,
   displaceY: 1,
+  displaceZ: 0,
+  occlusionValue: 0.1,
 //   stepSize: .5
 }
 
@@ -50,6 +52,8 @@ const obj = {
     metalAmount: state.metalAmount,
     displaceX: state.displaceX,
     displaceY: state.displaceY,
+    displaceZ: state.displaceZ,
+    occlusionValue: state.occlusionValue,
     // stepSize: state.stepSize,
     color1: {
         r: state.color1r,
@@ -77,8 +81,10 @@ gui.add(document, 'title');
 gui.add(obj, 'size', 0, 1, 0.05);
 gui.add(obj, 'scale', 0, 2, 0.01);
 gui.add(obj, 'metalAmount', 0, 1, 0.01);
-gui.add(obj, 'displaceX', 0, 1, 0.01);
-gui.add(obj, 'displaceY', 0, 1, 0.01);
+gui.add(obj, 'displaceX', 0, 10, 0.01);
+gui.add(obj, 'displaceY', 0, 10, 0.01);
+gui.add(obj, 'displaceZ', 0, 10, 0.01);
+gui.add(obj, 'occlusionValue', 0.0, 0.95, 0.01);
 // gui.add(obj, 'stepSize', .01, .95, 0.01);
 gui.addColor(obj, 'color1');
 gui.addColor(obj, 'color2');
@@ -138,6 +144,8 @@ let mesh = createSculptureWithGeometry(geometry, spCode(), () => {
     metalAmount: state.metalAmount,
     displaceX: state.displaceX,
     displaceY: state.displaceY,
+    displaceZ: state.displaceZ,
+    occlusionValue: state.occlusionValue,
     // stepSize: state.stepSize,
   }
 })
