@@ -49,8 +49,8 @@ export function spCode() {
 
         let col = vec3(0, 1, conto);
         reflectiveColor(rcr, rcg, rcb)
-        torus(0.4,0.5);
-        expand(n.z* (scale /1.5) )
+        torus(0.2,0.2);
+        expand(n.z* (scale /2.5) )
 
         reset();
 
