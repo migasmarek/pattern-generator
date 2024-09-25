@@ -1,4 +1,4 @@
-import { Scene, SphereGeometry, Vector3, PerspectiveCamera, WebGLRenderer, Color, MeshBasicMaterial, Mesh, Clock } from 'three';
+import { Scene, SphereGeometry, Vector3, PerspectiveCamera, WebGLRenderer, Color, MeshBasicMaterial, Mesh, Clock, BoxGeometry } from 'three';
 import { OrbitControls } from 'https://unpkg.com/three@0.146/examples/jsm/controls/OrbitControls.js';
 import { createSculptureWithGeometry } from 'https://unpkg.com/shader-park-core/dist/shader-park-core.esm.js';
 import { spCode } from '/sp-code.js';
@@ -12,14 +12,10 @@ camera.position.z = 5.5;
 let renderer = new WebGLRenderer({ antialias: true, transparent: true });
 renderer.setSize( window.innerWidth, window.innerHeight );
 renderer.setPixelRatio( window.devicePixelRatio );
-renderer.setClearColor( new Color(1, 1, 1), 0);
+renderer.setClearColor( new Color(0, 0, 0), 0);
 document.body.appendChild( renderer.domElement );
 
 let clock = new Clock();
-
-let button = document.querySelector('.button');
-button.innerHTML = "Loading Audio..."
-button.style.display = 'none';
 
 let state = {
   mouse : new Vector3(),
@@ -27,38 +23,122 @@ let state = {
   size: 0.5,
   pointerDown: 0.0,
   currPointerDown: 0.0,
-  // audio: 0.0,
-  // currAudio: 0.0,
   time: 0.0,
+  scale: 0.5,
+  color1r: 0.2,
+  color1g: 0.163,
+  color1b: 0.51,
+  color2r: 0.4,
+  color2g: 0.863,
+  color2b: 0.4,
+  color3r: 1.0,
+  color3g: 0.863,
+  color3b: 1.0,
+  rcr: 0.4,
+  rcg: 1,
+  rcb: 0.2,
+  metalAmount: 0.5,
+  displaceX: 0.1,
+  displaceY: 1,
+//   stepSize: .5
 }
 
 const gui = new GUI();
 const obj = {
-    size: state.size
+    size: state.size,
+    scale: state.scale,
+    metalAmount: state.metalAmount,
+    displaceX: state.displaceX,
+    displaceY: state.displaceY,
+    // stepSize: state.stepSize,
+    color1: {
+        r: state.color1r,
+        g: state.color1g,
+        b: state.color1b
+    },
+    color2: {
+        r: state.color2r,
+        g: state.color2g,
+        b: state.color2b
+    },
+    color3: {
+        r: state.color3r,
+        g: state.color3g,
+        b: state.color3b
+    },
+    reflectiveColor: {
+        r: state.rcr,
+        g: state.rcg,
+        b: state.rcb
+    }
 }
 
 gui.add(document, 'title');
 gui.add(obj, 'size', 0, 1, 0.05);
+gui.add(obj, 'scale', 0, 2, 0.01);
+gui.add(obj, 'metalAmount', 0, 1, 0.01);
+gui.add(obj, 'displaceX', 0, 1, 0.01);
+gui.add(obj, 'displaceY', 0, 1, 0.01);
+// gui.add(obj, 'stepSize', .01, .95, 0.01);
+gui.addColor(obj, 'color1');
+gui.addColor(obj, 'color2');
+gui.addColor(obj, 'color3');
+gui.addColor(obj, 'reflectiveColor');
 gui.onChange( event => {
-	console.log(event.object);     // object that was modified
-	console.log(event.property);   // string, name of property
-	console.log(event.value);
-    state.size = event.value;      // new value of controller
-	console.log(event.controller); // controller that was modified
+    console.log(event.property);
+    if (event.property === "color1") {
+        state.color1r = event.value.r;
+        state.color1g = event.value.g;
+        state.color1b = event.value.b;
+    } else if (event.property === "color2") {
+        state.color2r = event.value.r;
+        state.color2g = event.value.g;
+        state.color2b = event.value.b;
+    }  else if (event.property === "color3") {
+        state.color3r = event.value.r;
+        state.color3g = event.value.g;
+        state.color3b = event.value.b;
+    } else if (event.property === "reflectiveColor") {
+        state.rcr = event.value.r;
+        state.rcg = event.value.g;
+        state.rcb = event.value.b;
+    } else {
+        state[event.property] = event.value;
+    }
+    console.log(state);
+	//console.log(event.object);     // object that was modified
+	//console.log(event.property);   // string, name of property
+	//console.log(event.value);
+    //state.size = event.value;      // new value of controller
+	//console.log(event.controller); // controller that was modified
 } );
 
 // create our geometry and material
-let geometry  = new SphereGeometry(2, 45, 45);
-// let material = new MeshBasicMaterial( { color: 0x33aaee} );
-// let mesh = new Mesh(geometry, material);
+let geometry  = new BoxGeometry(4, 4, 4);
 
 let mesh = createSculptureWithGeometry(geometry, spCode(), () => {
   return {
     time: state.time,
     size: state.size,
+    scale: state.scale,
     pointerDown: state.pointerDown,
     mouse: state.mouse,
-    // audio: state.audio,
+    color1r: state.color1r,
+    color1g: state.color1g,
+    color1b: state.color1b,
+    color2r: state.color2r,
+    color2g: state.color2g,
+    color2b: state.color2b,
+    color3r: state.color3r,
+    color3g: state.color3g,
+    color3b: state.color3b,
+    rcr: state.rcr,
+    rcg: state.rcg,
+    rcb: state.rcb,
+    metalAmount: state.metalAmount,
+    displaceX: state.displaceX,
+    displaceY: state.displaceY,
+    // stepSize: state.stepSize,
   }
 })
 
