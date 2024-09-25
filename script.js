@@ -7,12 +7,12 @@ import GUI from 'https://cdn.jsdelivr.net/npm/lil-gui@0.19/+esm';
 let scene = new Scene();
 
 let camera = new PerspectiveCamera( 75, window.innerWidth/window.innerHeight, 0.1, 1000 );
-camera.position.z = 5.5;
+camera.position.z = 2;
 
 let renderer = new WebGLRenderer({ antialias: true, transparent: true });
 renderer.setSize( window.innerWidth, window.innerHeight );
 renderer.setPixelRatio( window.devicePixelRatio );
-renderer.setClearColor( new Color(0, 0, 0), 0);
+renderer.setClearColor( new Color(1, 1, 1), 1);
 document.body.appendChild( renderer.domElement );
 
 let clock = new Clock();
@@ -114,7 +114,7 @@ gui.onChange( event => {
 } );
 
 // create our geometry and material
-let geometry  = new BoxGeometry(4, 4, 4);
+let geometry  = new BoxGeometry();
 
 let mesh = createSculptureWithGeometry(geometry, spCode(), () => {
   return {
@@ -144,6 +144,21 @@ let mesh = createSculptureWithGeometry(geometry, spCode(), () => {
 
 scene.add(mesh);
 
+// Function to resize cube to fit full screen
+function resizeCubeToFitScreen() {
+    const aspectRatio = window.innerWidth / window.innerHeight;
+  
+    // Adjust cube scaling to fit both width and height of the screen
+    if (aspectRatio > 1) {
+        mesh.scale.set(aspectRatio, 1, 1); // Widen the cube when width > height
+    } else {
+        mesh.scale.set(1, 1 / aspectRatio, 1); // Heighten the cube when height > width
+    }
+  }
+
+  // Initial resize for the cube
+resizeCubeToFitScreen();
+
 window.addEventListener( 'pointermove', (event) => {
   state.currMouse.x = ( event.clientX / window.innerWidth ) * 2 - 1;
 	state.currMouse.y = - ( event.clientY / window.innerHeight ) * 2 + 1;
@@ -164,6 +179,8 @@ let onWindowResize = () => {
   camera.aspect = window.innerWidth / window.innerHeight;
   camera.updateProjectionMatrix();
   renderer.setSize( window.innerWidth, window.innerHeight );
+
+  resizeCubeToFitScreen();
 }
 
 window.addEventListener( 'resize', onWindowResize );
